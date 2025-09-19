@@ -1,6 +1,5 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable react-hooks/rules-of-hooks */
-/* eslint-disable no-unused-vars */
 
 import { useMemo } from "react";
 
@@ -8,9 +7,11 @@ export default function HeavyComponent({ numbers, useMemoMode }) {
   const computeSum = () => {
     console.log("Calculating heavy sum...");
     let result = 0;
-    for (let i = 0; i < 200_000_000; i++) {
+    for (let i = 0; i < 900_000_000; i++) {
       result += i % 2 === 0 ? 1 : 0;
     }
+
+    console.log("result of heavy calc:", result);
     return numbers.reduce((a, b) => a + b, 0);
   };
 
