@@ -54,12 +54,16 @@ export default function MemoAndCallbackDemo() {
         <MemoizedLogo onClick={activeClickHandler} />
       </div>
       <p className="mt-4 text-sm">
-        When `useCallback` is <strong>disabled</strong>, the logo renders each
-        click on the counter..
+        When `useCallback` is <strong>disabled</strong>, the logo component
+        re-renders on every counter click. This is because a new `onClick`
+        function is created every time the parent re-renders. `React.memo` sees
+        a "new" function in the props and is forced to re-render its child.
       </p>
-      <p className="mt4 text-sm">
-        When `useCallback` is <strong>enabled</strong>, the logo rendes only
-        once
+      <p className="mt-4 text-sm">
+        When `useCallback` is <strong>enabled</strong>, the logo component only
+        renders once. `useCallback` provides the *exact same function instance*
+        across re-renders. `React.memo` sees that the `onClick` prop is
+        identical and correctly skips the re-render.
       </p>
     </div>
   );

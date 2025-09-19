@@ -23,7 +23,7 @@ export default function App() {
     <div className="w-screen min-h-screen flex flex-col items-center justify-start py-10 px-4 sm:px-6 lg:px-8 bg-gray-50">
       <header className="w-full max-w-5xl mb-8">
         <h1 className="text-4xl font-extrabold text-center text-gray-800 mb-4">
-          React Performance Demos
+          React Performance Playground
         </h1>
         <nav className="flex flex-wrap justify-center gap-3 bg-white p-3 rounded-xl shadow-md">
           {Object.keys(demos).map((key) => (
@@ -51,6 +51,23 @@ export default function App() {
           }
         >
           <ActiveComponent />
+          {activeDemo === "useMemo" && (
+            <div className="flex flex-col w-full justify-center items-center bg-red">
+              <p className="mt-4 text-sm">
+                When `useMemo` is <strong>disabled</strong>, the counter lags.
+                This happens because every click forces the HeavyComponent (Sum
+                Component) to re-run its expensive calculation, blocking the
+                browser from updating the screen until the calculation is
+                finished.
+              </p>
+              <p className="mt-4 text-sm">
+                When `useMemo` is <strong>enabled</strong>, the counter is fast.
+                The HeavyComponent (Sum Component) still re-renders, but useMemo
+                skips the expensive calculation and returns the cached result.
+                This keeps the browser free to update the screen instantly.
+              </p>
+            </div>
+          )}
         </Suspense>
       </main>
     </div>

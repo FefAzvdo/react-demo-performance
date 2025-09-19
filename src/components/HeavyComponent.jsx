@@ -20,11 +20,16 @@ export default function HeavyComponent({ numbers, useMemoMode }) {
 
   return (
     <>
-      <div className="flex gap-4">
-        {numbers.map((num) => (
-          <span className="font-bold text-xl border-2 border-black bg-blue-500 text-white p-2 rounded">
-            {num}
-          </span>
+      <div className="flex flex-wrap gap-4">
+        {numbers.map((num, index) => (
+          <>
+            <span className="font-bold text-xl border-2 border-black bg-blue-500 text-white p-2 rounded">
+              {num}
+            </span>
+            {index !== numbers.length - 1 && (
+              <strong className="text-4xl">+</strong>
+            )}
+          </>
         ))}
       </div>
       <h2 className="text-xl font-bold text-indigo-600 mt-6">

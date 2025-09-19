@@ -1,41 +1,64 @@
 [Leia isto em Português / Read this in Portuguese](README.pt-BR.md)
 
-# React Performance Demo with `useMemo`
+# React Performance Playground
 
-This project is a simple React application built to demonstrate the performance impact of the `useMemo` hook in a practical and visual way. The application renders a component that performs a computationally "heavy" calculation, allowing the user to toggle `useMemo` on and off to compare the difference in UI responsiveness.
+This project is an interactive web application built to demonstrate key React performance optimization techniques in a practical and visual way. Instead of relying on console logs, this playground uses animations and real-world simulations to show the impact of optimization on UI responsiveness and load times.
 
-## What the Code Does
+### [➡️ Live Demo Link Here ⬅️](https://react-demo-performance.vercel.app/)
 
-The application consists of two main components: `App` and `HeavyComponent`.
+---
 
-1.  **`App.js` (Main Component):**
+## Demos Included
 
-    - Manages the application's global state, including a list of numbers, a click counter, and a boolean to enable/disable `useMemo` mode.
-    - Renders the main interface, which includes:
-      - A **"Click fast!"** button: Increments a click counter. This button is used to test UI responsiveness. If the app is slow, the counter will not update smoothly.
-      - An **"Add number"** button: Adds a new number to the list.
-      - An **"Enable useMemo"** checkbox: Controls whether the optimized or unoptimized version of the calculation runs in `HeavyComponent`.
-      - A list displaying the current numbers.
-    - It renders the `HeavyComponent`, passing the list of numbers and the `useMemo` mode as props.
+This application is divided into three distinct demonstrations, each focusing on a common performance bottleneck.
 
-2.  **`HeavyComponent.js` (Heavy Calculation Component):**
-    - This component receives the list of numbers (`numbers`) and the `useMemo` mode (`useMemoMode`).
-    - Its main purpose is to calculate the sum of all received numbers. However, to simulate a truly expensive operation, the `computeSum` function first runs a giant `for` loop (200 million iterations) before summing the numbers.
-    - **The core logic is here**:
-      - If `useMemoMode` is `false`, the `computeSum()` function is called directly on **every single render** of `HeavyComponent`.
-      - If `useMemoMode` is `true`, the result of `computeSum()` is "memoized" using the `useMemo` hook. This means the heavy calculation will only be re-executed if its dependency—the `numbers` array—changes.
+### 1. `useMemo`
 
-## How to Test the Performance Difference
+This demo simulates a component with an expensive, blocking calculation. You can toggle `useMemo` on and off to see its direct impact on UI responsiveness.
 
-1.  **Run the application.**
-2.  **Keep the "Enable useMemo" checkbox unchecked.**
-3.  Click the **"Click fast! Counter: ..."** button rapidly. You will notice that the UI is slow and laggy. The click counter takes a while to update.
-    - **Why does this happen?** Every time you click the button, the `clicks` state in the `App` component is updated, causing a re-render. Since `HeavyComponent` is a child of `App`, it also re-renders. Without `useMemo`, the `computeSum` function (with its 200 million-iteration loop) is executed on every click, blocking the main JavaScript thread and freezing the UI.
-4.  **Now, check the "Enable useMemo" checkbox.**
-5.  Click the **"Click fast!"** button rapidly again. You will see that the UI is extremely responsive, and the counter updates instantly.
-    - **Why does this happen?** With `useMemo` enabled, the sum's result is cached. When you click the button, the `App` and `HeavyComponent` still re-render. However, React sees that the dependency of `useMemo` (the `numbers` prop) has not changed. Therefore, instead of re-running the `computeSum` function, it returns the value that was already calculated and stored, avoiding the heavy computation and keeping the UI fluid.
-6.  Click the **"Add number"** button. You will notice a slight delay. This happens because the `numbers` array has changed, forcing `useMemo` to re-run the heavy calculation, which is the expected behavior.
+- **Without `useMemo`**: Clicking the "Re-render" button causes the entire UI to freeze until the heavy calculation is complete.
+- **With `useMemo`**: The UI remains fast and responsive because the expensive calculation is skipped, and the cached result is used instead.
 
-## Conclusion
+### 2. `React.memo` + `useCallback`
 
-This example perfectly illustrates the purpose of `useMemo`: it is an optimization tool to avoid expensive calculations on subsequent renders when the calculation's dependencies have not changed. By "memoizing" (remembering) the result, it prevents heavy operations from impacting the user interface's responsiveness during unnecessary re-renders.
+This demo illustrates why passing functions as props can break optimizations and how `useCallback` solves it. A child component is wrapped in `React.memo` to prevent unnecessary re-renders.
+
+- **Without `useCallback`**: A new function is created on every parent render. `React.memo` sees a new prop and is forced to re-render the child component, which is highlighted with a red flash.
+- **With `useCallback`**: The exact same function instance is passed as a prop. `React.memo` correctly identifies that the props haven't changed and skips the re-render.
+
+### 3. `React.lazy` + `Suspense`
+
+This demo shows how to improve initial page load times by code-splitting and loading large components only when they are needed.
+
+- **How it works**: The demo features a "Super Heavy Component" (which includes the `lodash` library to increase its file size). This component is not included in the initial JavaScript bundle. When you click the "Load" button, you can watch the new JavaScript "chunk" being downloaded in your browser's Network tab. Instructions are provided to simulate a slow network to make the effect more obvious.
+
+---
+
+## Tech Stack
+
+- **Framework**: React 18
+- **Build Tool**: Vite
+- **Styling**: TailwindCSS
+- **Simulation**: `lodash` is used to simulate a large dependency for the lazy loading demo.
+
+## How to Run Locally
+
+1.  **Clone the repository:**
+
+    ```bash
+    git clone https://github.com/your-username/your-repo-name.git
+    cd your-repo-name
+    ```
+
+2.  **Install dependencies:**
+
+    ```bash
+    npm install
+    ```
+
+3.  **Start the development server:**
+    ```bash
+    npm run dev
+    ```
+
+The application will be available at `http://localhost:5173` (or another port if 5173 is busy ).
