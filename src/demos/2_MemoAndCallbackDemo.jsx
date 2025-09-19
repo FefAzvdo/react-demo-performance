@@ -35,16 +35,16 @@ export default function MemoAndCallbackDemo() {
       <div className="flex flex-col sm:flex-row gap-4 mb-6 items-center">
         <button
           onClick={() => setCount((c) => c + 1)}
-          className="bg-blue-500 hover:bg-blue-600 text-white px-5 py-2 rounded-md shadow"
+          className="bg-blue-500 hover:bg-blue-600 text-white px-5 py-2 rounded-md shadow cursor-pointer"
         >
           Re-render Parent. Count: {count}
         </button>
-        <label className="flex items-center gap-2">
+        <label className="flex items-center gap-2 cursor-pointer">
           <input
             type="checkbox"
             checked={useCallbackMode}
             onChange={() => setUseCallbackMode((prev) => !prev)}
-            className="w-5 h-5 accent-blue-500"
+            className="w-5 h-5 accent-blue-500 cursor-pointer"
           />
           Enable useCallback
         </label>

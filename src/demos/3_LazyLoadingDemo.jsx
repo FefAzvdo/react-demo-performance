@@ -51,7 +51,7 @@ export default function LazyLoadingDemo() {
 
       <button
         onClick={() => setShow(true)}
-        className="bg-purple-500 hover:bg-purple-600 text-white px-5 py-2 rounded-md shadow text-lg"
+        className="bg-purple-500 hover:bg-purple-600 text-white px-5 py-2 rounded-md shadow text-lg cursor-pointer"
         disabled={show}
       >
         {show ? "Component Loaded!" : "Load Super Heavy Component"}
